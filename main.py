@@ -17,6 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
+        self.GridCheck = False
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -25,6 +26,16 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName("gridLayout")
         self.widget = PlotWidget(self.centralwidget)
         self.widget.setObjectName("widget")
+        self.checkGridBox = QtWidgets.QCheckBox(self.widget)
+        self.checkGridBox.setGeometry(QtCore.QRect(10, 30, 171, 41))
+        self.checkGridBox.setAutoFillBackground(True)
+        self.checkGridBox.setStyleSheet("color: red")
+        self.checkGridBox.setObjectName("checkGridBox")
+        self.label = QtWidgets.QLabel(self.widget)
+        self.label.setGeometry(QtCore.QRect(26, 32, 121, 41))
+        self.label.setStyleSheet("color: red")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setObjectName("label")
         self.gridLayout.addWidget(self.widget, 0, 0, 1, 1)
         self.horizontalLayout.addLayout(self.gridLayout)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -56,6 +67,8 @@ class Ui_MainWindow(object):
         self.Exp.triggered.connect(self.showExpFunc)
         self.Tcos.triggered.connect(self.showTCosFunc)
 
+
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -76,14 +89,21 @@ class Ui_MainWindow(object):
             y.append(math.sin(x[i]**2))
 
         plt = pg.plot(x, y, title="SinFunc", pen='r')
-        plt.showGrid(x=True, y=True)
+        if self.checkGridBox.isChecked() == True:
+            plt.showGrid(x=True, y=True)
+        else:
+            plt.showGrid(x=False, y=False)
     def showExpFunc(self):
         x = list(range(0, 100))
         y = []
         for i in range(len(x)):
             y.append(x[i]*math.exp(-0.1*x[i]))
         plt = pg.plot(x, y, title="ExpFunc", pen='r')
-        plt.showGrid(x=True, y=True)
+        if self.checkGridBox.isChecked() == True:
+            plt.showGrid(x=True, y=True)
+        else:
+            plt.showGrid(x=False, y=False)
+
 
     def showTCosFunc(self):
         t = [math.pi/6 , math.pi/3 , math.pi/2 , (math.pi * 2)/3, (5 * math.pi)/6, math.pi, (7 * math.pi)/6, (4 * math.pi)/3 ,(3*math.pi)/6, (5* math.pi)/3 , (11*math.pi)/6, 2*math.pi]
@@ -93,7 +113,10 @@ class Ui_MainWindow(object):
             x.append(t[i] * math.sin(t[i]))
             y.append(t[i] * math.cos(t[i]))
         plt = pg.plot(x, y, title="TcosFunc", pen='r')
-        plt.showGrid(x=True, y=True)
+        if self.checkGridBox.isChecked() == True:
+            plt.showGrid(x=True, y=True)
+        else:
+            plt.showGrid(x=False, y=False)
 
 from pyqtgraph import PlotWidget
 
